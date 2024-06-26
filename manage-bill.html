@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Water Bill</title>
+  <style>
+    /* CSS styles */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+    
+    header {
+      background-color: #007bff;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    nav {
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 10px 0;
+    }
+    
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+    
+    nav li {
+      margin: 0 10px;
+    }
+    
+    nav a {
+      color: #333;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+    
+    nav a:hover {
+      background-color: #f5f5f5;
+    }
+    
+    main {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .create-bill-section {
+      margin-bottom: 40px;
+    }
+    
+    .create-bill-button {
+      display: inline-block;
+      background-color: #007bff;
+      color: #fff;
+      padding: 12px 24px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .create-bill-button:hover {
+      background-color: #0056b3;
+    }
+    
+    .bill-history-section {
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      width: 100%;
+      max-width: 800px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    th {
+      background-color: #f5f5f5;
+      font-weight: bold;
+    }
+    
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+    
+    .actions button {
+      display: inline-block;
+      background-color: #007bff;
+      color: #fff;
+      padding: 8px 16px;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-left: 10px;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border: none;
+      cursor: pointer;
+    }
+    
+    .actions button:hover {
+      background-color: #0056b3;
+    }
+    
+    .input-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 24px;
+    }
+    
+    .input-fields input,
+    .input-fields select {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+    
+    .input-fields button {
+      display: inline-block;
+      background-color: #007bff;
+      color: #fff;
+      padding: 8px 16px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border: none;
+      cursor: pointer;
+    }
+    
+    .input-fields button:hover {
+      background-color: #0056b3;
+    }
+    
+    @media (max-width: 767px) {
+      main {
+        padding: 20px;
+      }
+      
+      .create-bill-section {
+        margin-bottom: 20px;
+      }
+      
+      .bill-history-section {
+        padding: 20px;
+      }
+      
+      table {
+        font-size: 12px;
+      }
+      
+      th, td {
+        padding: 8px;
+      }
+    }
+    
+    footer {
+      background-color: #007bff;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Manage Water Bill</h1>
+  </header>
+  
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+      <li><a href="#">Manage Your Bill</a></li>
+    </ul>
+  </nav>
+  
+  <main>
+    <div class="create-bill-section">
+      <a href="#" class="create-bill-button" id="create-bill-btn">Create Manual Water Bill</a>
+    </div>
+    
+    <div class="bill-history-section" id="bill-history-section" style="display: none;">
+      <h2>Your Water Bill History</h2>
+      <table id="bill-history-table">
+        <thead>
+          <tr>
+            <th>Bill Date</th>
+            <th>Meter Reading</th>
+            <th>Water Usage (m³)</th>
+            <th>Customer Email</th>
+            <th>Customer Number</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      
+      <div class="input-fields" style="display: none;">
+        <input type="date" id="bill-date" placeholder="Bill Date">
+        <input type="number" id="meter-reading" placeholder="Meter Reading">
+        <input type="number" id="water-usage" placeholder="Water Usage (m³)">
+        <input type="email" id="customer-email" placeholder="Customer Email">
+        <input type="tel" id="customer-number" placeholder="Customer Number">
+        <select id="status">
+          <option value="Unpaid" selected>Unpaid</option>
+        </select>
+        <div class="actions">
+          <button class="save-bill" id="save-bill-btn">Save</button>
+          <button class="cancel-bill" id="cancel-bill-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <footer>
+    <p>&copy; 2024 Water Bill Service. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const createBillBtn = document.getElementById('create-bill-btn');
+    const billHistorySection = document.getElementById('bill-history-section');
+    const inputFields = document.querySelector('.input-fields');
+    const tableBody = document.querySelector('#bill-history-table tbody');
+    const saveBillBtn = document.getElementById('save-bill-btn');
+    const cancelBillBtn = document.getElementById('cancel-bill-btn');
+
+    createBillBtn.addEventListener('click', () => {
+      billHistorySection.style.display = 'block';
+      inputFields.style.display = 'block';
+    });
+
+    saveBillBtn.addEventListener('click', () => {
+      const billDate = document.getElementById('bill-date').value;
+      const meterReading = document.getElementById('meter-reading').value;
+      const waterUsage = document.getElementById('water-usage').value;
+      const customerEmail = document.getElementById('customer-email').value;
+      const customerNumber = document.getElementById('customer-number').value;
+      const status = document.getElementById('status').value;
+
+      // Create a new row with the entered values
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+        <td>${billDate}</td>
+        <td>${meterReading}</td>
+        <td>${waterUsage} m³</td>
+        <td>${customerEmail}</td>
+        <td>${customerNumber}</td>
+        <td>${status}</td>
+        <td class="actions">
+          <button class="pay-bill">Pay</button>
+        </td>
+      `;
+
+      // Append the new row to the table body
+      tableBody.appendChild(newRow);
+
+      // Clear the input fields
+      document.getElementById('bill-date').value = '';
+      document.getElementById('meter-reading').value = '';
+      document.getElementById('water-usage').value = '';
+      document.getElementById('customer-email').value = '';
+      document.getElementById('customer-number').value = '';
+
+      // Hide the input fields
+      inputFields.style.display = 'none';
+
+      // Send the water bill details to the owner's email when the "Pay" button is clicked
+      const payBillBtn = newRow.querySelector('.pay-bill');
+      payBillBtn.addEventListener('click', () => {
+        sendWaterBillToOwnerEmail(billDate, meterReading, waterUsage, customerEmail, customerNumber, 'Paid');
+        newRow.cells[5].textContent = 'Paid';
+        newRow.cells[6].innerHTML = '';
+      });
+    });
+
+    cancelBillBtn.addEventListener('click', () => {
+      inputFields.style.display = 'none';
+    });
+
+    function sendWaterBillToOwnerEmail(billDate, meterReading, waterUsage, customerEmail, customerNumber, status) {
+      // Create a new XMLHttpRequest object
+      const xhr = new XMLHttpRequest();
+
+      // Set the request method and URL
+      xhr.open('POST', 'manage-bill.php', true);
+
+      // Set the request headers
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+      // Define the request data
+      const data = `billDate=${encodeURIComponent(billDate)}&meterReading=${encodeURIComponent(meterReading)}&waterUsage=${encodeURIComponent(waterUsage)}&customerEmail=${encodeURIComponent(customerEmail)}&customerNumber=${encodeURIComponent(customerNumber)}&status=${encodeURIComponent(status)}`;
+
+      // Define the callback function for the request
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+          console.log('Water bill sent to owner email successfully!');
+        } else {
+          console.error('Error sending water bill to owner email.');
+        }
+      };
+
+      // Send the request with the data
+      xhr.send(data);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Water Bill Service</title>
+  <style>
+    /* CSS styles */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+    
+    header {
+      background-color: #007bff;
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .admin-login button {
+      display: inline-block;
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border: none;
+      cursor: pointer;
+    }
+    
+    .admin-login button:hover {
+      background-color: #0056b3;
+    }
+    
+    nav {
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 10px 0;
+    }
+    
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+    
+    nav li {
+      margin: 0 10px;
+    }
+    
+    nav a {
+      color: #333;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+    
+    nav a:hover {
+      background-color: #f5f5f5;
+    }
+    
+    main {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .welcome-message {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    @media (max-width: 767px) {
+      header {
+        padding: 10px 20px;
+      }
+      
+      main {
+        padding: 20px;
+      }
+      
+      .welcome-message {
+        margin-bottom: 20px;
+      }
+    }
+    
+    footer {
+      background-color: #007bff;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Water Bill Service</h1>
+    <div class="admin-login">
+      <button id="admin-login-btn">Open Admin Dashboard</button>
+    </div>
+  </header>
+  
+  <nav>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+      <li><a href="manage-bill.html">Manage Your Bill</a></li>
+    </ul>
+  </nav>
+  
+  <main>
+    <div class="welcome-message">
+      <h2>Welcome to Water Bill Service</h2>
+      <p>Manage your water bills easily with our online platform.</p>
+    </div>
+  </main>
+  
+  <footer>
+    <p>&copy; 2024 Water Bill Service. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const adminLoginBtn = document.getElementById('admin-login-btn');
+
+    adminLoginBtn.addEventListener('click', () => {
+      adminLogin();
+    });
+
+    function adminLogin() {
+      const username = prompt('Enter your username:');
+      const password = prompt('Enter your password:');
+
+      if (username === 'admin12345123' && password === 'admin12345678910') {
+        alert('Login successful! Redirecting to Admin Dashboard...');
+        window.location.href = 'admin-dashboard.html';
+      } else {
+        alert('Invalid username or password. Please try again.');
+      }
+    }
+  </script>
+</body>
+</html>

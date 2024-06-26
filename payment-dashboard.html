@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Dashboard</title>
+  <style>
+    /* CSS styles */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+    
+    header {
+      background-color: #007bff;
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    nav {
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 10px 0;
+    }
+    
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+    
+    nav li {
+      margin: 0 10px;
+    }
+    
+    nav a {
+      color: #333;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+    
+    nav a:hover {
+      background-color: #f5f5f5;
+    }
+    
+    main {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .payment-dashboard {
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      width: 100%;
+      max-width: 800px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    th {
+      background-color: #f5f5f5;
+      font-weight: bold;
+    }
+    
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+    
+    .actions a {
+      display: inline-block;
+      background-color: #007bff;
+      color: #fff;
+      padding: 8px 16px;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-left: 10px;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .actions a:hover {
+      background-color: #0056b3;
+    }
+    
+    @media (max-width: 767px) {
+      header {
+        padding: 10px 20px;
+      }
+      
+      main {
+        padding: 20px;
+      }
+      
+      .payment-dashboard {
+        padding: 20px;
+      }
+      
+      table {
+        font-size: 12px;
+      }
+      
+      th, td {
+        padding: 8px;
+      }
+    }
+    
+    footer {
+      background-color: #007bff;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Payment Dashboard</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li><a href="manage-bill.html">Manage Water Bill</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <main>
+    <div class="payment-dashboard">
+      <h2>Water Bill Payments</h2>
+      
+      <h3>Pending Payments</h3>
+      <table id="pending-payments">
+        <thead>
+          <tr>
+            <th>Bill Date</th>
+            <th>Meter Reading</th>
+            <th>Water Usage (m³)</th>
+            <th>Customer Email</th>
+            <th>Customer Number</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      
+      <h3>Processed Payments</h3>
+      <table id="processed-payments">
+        <thead>
+          <tr>
+            <th>Bill Date</th>
+            <th>Meter Reading</th>
+            <th>Water Usage (m³)</th>
+            <th>Customer Email</th>
+            <th>Customer Number</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </main>
+  
+  <footer>
+    <p>&copy; 2024 Water Bill Service. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Fetch water bill data from the server
+    fetchWaterBillData();
+
+    function fetchWaterBillData() {
+      // Create a new XMLHttpRequest object
+      const xhr = new XMLHttpRequest();
+
+      // Set the request method and URL
+      xhr.open('GET', 'payment-dashboard.php', true);
+
+      // Define the callback function for the request
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+          // Parse the response data
+          const waterBillData = JSON.parse(xhr.responseText);
+
+          // Populate the pending payments table
+          populatePendingPaymentsTable(waterBillData);
+
+          // Populate the processed payments table
+          populateProcessedPaymentsTable(waterBillData);
+        } else {
+          console.error('Error fetching water bill data.');
+        }
+      };
+
+      // Send the request
+      xhr.send();
+    }
+
+    function populatePendingPaymentsTable(waterBillData) {
+      const tableBody = document.querySelector('#pending-payments tbody');
+
+      // Clear the existing table rows
+      tableBody.innerHTML = '';
+
+      // Add new rows to the table
+      waterBillData.forEach(bill => {
+        if (bill.status === 'Pending') {
+          const newRow = document.createElement('tr');
+          newRow.innerHTML = `
+            <td>${bill.billDate}</td>
+            <td>${bill.meterReading}</td>
+            <td>${bill.waterUsage} m³</td>
+            <td>${bill.customerEmail}</td>
+            <td>${bill.customerNumber}</td>
+            <td class="actions">
+              <a href="#" class="process-payment" data-bill-id="${bill.id}">Process Payment</a>
+            </td>
+          `;
+
+          tableBody.appendChild(newRow);
+        }
+      });
+
+      // Add event listeners for the "Process Payment" links
+      const processPaymentLinks = document.querySelectorAll('.process-payment');
+      processPaymentLinks.forEach(link => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          const billId = event.target.dataset.billId;
+          processPayment(billId);
+        });
+      });
+    }
+
+    function populateProcessedPaymentsTable(waterBillData) {
+      const tableBody = document.querySelector('#processed-payments tbody');
+
+      // Clear the existing table rows
+      tableBody.innerHTML = '';
+
+      // Add new rows to the table
+      waterBillData.forEach(bill => {
+        if (bill.status === 'Processed') {
+          const newRow = document.createElement('tr');
+          newRow.innerHTML = `
+            <td>${bill.billDate}</td>
+            <td>${bill.meterReading}</td>
+            <td>${bill.waterUsage} m³</td>
+            <td>${bill.customerEmail}</td>
+            <td>${bill.customerNumber}</td>
+          `;
+
+          tableBody.appendChild(newRow);
+        }
+      });
+    }
+
+    function processPayment(billId) {
+      // Create a new XMLHttpRequest object
+      const xhr = new XMLHttpRequest();
+
+      // Set the request method and URL
+      xhr.open('POST', 'payment-dashboard.php', true);
+
+      // Set the request headers
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+      // Define the request data
+      const data = `billId=${encodeURIComponent(billId)}&status=Processed`;
+
+      // Define the callback function for the request
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+          console.log('Payment processed successfully!');
+          fetchWaterBillData(); // Refresh the payment dashboard
+        } else {
+          console.error('Error processing payment.');
+        }
+      };
+
+      // Send the request with the data
+      xhr.send(data);
+    }
+  </script>
+</body>
+</html>

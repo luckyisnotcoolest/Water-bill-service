@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <style>
+    /* CSS styles */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+    
+    header {
+      background-color: #007bff;
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    nav {
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 10px 0;
+    }
+    
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+    
+    nav li {
+      margin: 0 10px;
+    }
+    
+    nav a {
+      color: #333;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+    
+    nav a:hover {
+      background-color: #f5f5f5;
+    }
+    
+    main {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .admin-dashboard {
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      width: 100%;
+      max-width: 800px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    th {
+      background-color: #f5f5f5;
+      font-weight: bold;
+    }
+    
+    @media (max-width: 767px) {
+      header {
+        padding: 10px 20px;
+      }
+      
+      main {
+        padding: 20px;
+      }
+      
+      .admin-dashboard {
+        padding: 20px;
+      }
+      
+      table {
+        font-size: 12px;
+      }
+      
+      th, td {
+        padding: 8px;
+      }
+    }
+    
+    footer {
+      background-color: #007bff;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Admin Dashboard</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li><a href="manage-bill.html">Manage Water Bill</a></li>
+        <li><a href="payment-dashboard.html">Payment Dashboard</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <main>
+    <div class="admin-dashboard">
+      <h2>Welcome to the Admin Dashboard</h2>
+      
+      <h3>Water Bill Summary</h3>
+      <table id="water-bill-summary">
+        <thead>
+          <tr>
+            <th>Total Bills</th>
+            <th>Paid Bills</th>
+            <th>Unpaid Bills</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="total-bills">0</td>
+            <td id="paid-bills">0</td>
+            <td id="unpaid-bills">0</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <h3>Recent Water Bills</h3>
+      <table id="recent-water-bills">
+        <thead>
+          <tr>
+            <th>Bill Date</th>
+            <th>Meter Reading</th>
+            <th>Water Usage (m³)</th>
+            <th>Customer Email</th>
+            <th>Customer Number</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </main>
+  
+  <footer>
+    <p>&copy; 2024 Water Bill Service. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Fetch water bill data from the server
+    fetchWaterBillData();
+
+    function fetchWaterBillData() {
+      // Create a new XMLHttpRequest object
+      const xhr = new XMLHttpRequest();
+
+      // Set the request method and URL
+      xhr.open('GET', 'admin-dashboard.php', true);
+
+      // Define the callback function for the request
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+          // Parse the response data
+          const waterBillData = JSON.parse(xhr.responseText);
+
+          // Update the water bill summary
+          updateWaterBillSummary(waterBillData);
+
+          // Populate the recent water bills table
+          populateRecentWaterBills(waterBillData);
+        } else {
+          console.error('Error fetching water bill data.');
+        }
+      };
+
+      // Send the request
+      xhr.send();
+    }
+
+    function updateWaterBillSummary(waterBillData) {
+      const totalBillsElement = document.getElementById('total-bills');
+      const paidBillsElement = document.getElementById('paid-bills');
+      const unpaidBillsElement = document.getElementById('unpaid-bills');
+
+      let totalBills = 0;
+      let paidBills = 0;
+      let unpaidBills = 0;
+
+      waterBillData.forEach(bill => {
+        totalBills++;
+        if (bill.status === 'Paid') {
+          paidBills++;
+        } else {
+          unpaidBills++;
+        }
+      });
+
+      totalBillsElement.textContent = totalBills;
+      paidBillsElement.textContent = paidBills;
+      unpaidBillsElement.textContent = unpaidBills;
+    }
+
+    function populateRecentWaterBills(waterBillData) {
+      const tableBody = document.querySelector('#recent-water-bills tbody');
+
+      // Clear the existing table rows
+      tableBody.innerHTML = '';
+
+      // Add new rows to the table
+      waterBillData.slice(0, 5).forEach(bill => {
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+          <td>${bill.billDate}</td>
+          <td>${bill.meterReading}</td>
+          <td>${bill.waterUsage} m³</td>
+          <td>${bill.customerEmail}</td>
+          <td>${bill.customerNumber}</td>
+          <td>${bill.status}</td>
+        `;
+
+        tableBody.appendChild(newRow);
+      });
+    }
+  </script>
+</body>
+</html>
